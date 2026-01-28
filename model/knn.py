@@ -1,0 +1,40 @@
+import pandas as pd
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import (
+    accuracy_score, roc_auc_score, precision_score, recall_score, f1_score, matthews_corrcoef
+)
+
+data = pd.read_csv("../test.csv")
+X = data.drop("Revenue", axis=1)
+y = data["Revenue"].map({False:0, True:1})
+
+categorical_features = X.select_dtypes(include=["object"]).columns
+numerical_features = X.select_dtypes(exclude=["object"]).columns
+
+preprocessor = ColumnTransformer([
+    ("num", StandardScaler(), numerical_features),
+    ("cat", OneHotEncoder(handle_unknown="ignore"), categorical_features)
+])
+
+pipeline = Pipeline([
+    ("preprocessor", preprocessor),
+    ("classifier", KNeighborsClassifier(n_neighbors=5))
+])
+
+pipeline.fit(X, y)
+y_pred = pipeline.predict(X)
+y_proba = pipeline.predict_proba(X)[:,1]
+
+metrics = {
+    "Accuracy": accuracy_score(y, y_pred),
+    "AUC": roc_auc_score(y, y_proba),
+    "Precision": precision_score(y, y_pred),
+    "Recall": recall_score(y, y_pred),
+    "F1 Score": f1_score(y, y_pred),
+    "MCC": matthews_corrcoef(y, y_pred)
+}
+
+y_true = y
