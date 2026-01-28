@@ -33,12 +33,12 @@ st.markdown(f"[Download test.csv]({csv_url})", unsafe_allow_html=True)
 # Model files mapping
 # ===========================
 model_files = {
-    "Logistic Regression": "models/logistic_regression.ipynb",
-    "Decision Tree": "models/decision_tree.ipynb",
-    "KNN": "models/knn.ipynb",
-    "Naive Bayes": "models/naive_bayes.ipynb",
-    "Random Forest": "models/random_forest.ipynb",
-    "XGBoost": "models/xgboost.ipynb"
+    "Logistic Regression": "model/logistic_regression.ipynb",
+    "Decision Tree": "model/decision_tree.ipynb",
+    "KNN": "model/knn.ipynb",
+    "Naive Bayes": "model/naive_bayes.ipynb",
+    "Random Forest": "model/random_forest.ipynb",
+    "XGBoost": "model/xgboost.ipynb"
 }
 
 # ===========================
@@ -86,4 +86,5 @@ if st.button("Run Model"):
         st.subheader("📋 Classification Report")
         report = classification_report(model_module.y_true, model_module.y_pred, output_dict=True)
         st.dataframe(pd.DataFrame(report).transpose())
+
 
