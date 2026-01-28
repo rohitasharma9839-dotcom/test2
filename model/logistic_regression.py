@@ -6,9 +6,13 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
     accuracy_score, roc_auc_score, precision_score, recall_score, f1_score, matthews_corrcoef
 )
+from pathlib import Path
 
-# Load test dataset
-data = pd.read_csv("../test.csv")
+# Path to the current file
+file_path = Path(__file__).parent.parent / "test.csv"
+
+data = pd.read_csv(file_path)
+
 X = data.drop("Revenue", axis=1)
 y = data["Revenue"].map({False:0, True:1})
 
@@ -42,3 +46,4 @@ metrics = {
 }
 
 y_true = y
+
